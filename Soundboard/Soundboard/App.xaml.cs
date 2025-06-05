@@ -3,6 +3,9 @@ using System.Configuration;
 using System.Data;
 using System.Windows;
 using Autofac;
+using Soundboard.Services;
+using Soundboard.ViewModels;
+using IContainer = Autofac.IContainer;
 
 namespace Soundboard
 {

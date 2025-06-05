@@ -7,6 +7,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <Button Grid.Row="0" 
+                Content="{Binding SoundButtonText}"
+                Command="{Binding PlaySoundCommand}"
+                FontSize="16"
+                Margin="20"
+                Padding="10"/>
+
+        <TextBlock Grid.Row="1" 
+                   Text="Basic Soundboard - MVVM + DI"
+                   HorizontalAlignment="Center"
+                   Margin="10"
+                   FontStyle="Italic"
+                   Foreground="Gray"/>
     </Grid>
 </Window>
