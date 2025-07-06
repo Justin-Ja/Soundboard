@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using NAudio.Wave;
 using Soundboard;
 using Soundboard.Commands;
 using Soundboard.Services;
@@ -32,7 +33,7 @@ public class MainViewModel : INotifyPropertyChanged
         //TODO: Hardcoded path for now - probably wont change unless I want ppl to be able to pick out files specifically...
         // Testing with MP3 for now, but NAudio does support wav and others
         _soundFilePath = Path.Combine(baseDir, "Sounds", "sample");
-        MessageBox.Show(SoundFilePath);
+        //MessageBox.Show(SoundFilePath);
 
         if (!File.Exists(_soundFilePath))
         {
@@ -62,11 +63,12 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
+
+
     private bool CanPlaySound()
     {
         return !string.IsNullOrEmpty(SoundFilePath);
     }
-
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {

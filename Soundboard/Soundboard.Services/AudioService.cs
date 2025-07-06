@@ -1,80 +1,191 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using NAudio;
 
-namespace Soundboard.Services
+namespace Soundboard.Services;
+
+public class AudioService : IAudioService
 {
-    public class AudioService : IAudioService
+    private WasapiOut _waveOutSpeaker;
+    private AudioFileReader _audioFileSpeaker;
+    private WasapiOut _waveOutMic;
+    private AudioFileReader _audioFileMic;
+
+    public async Task PlaySoundAsync(string filePath)
     {
-        private WaveOutEvent _waveOut;
-        private AudioFileReader _audioFile;
-
-        public async Task PlaySoundAsync(string filePath)
+        try
         {
-            try
-            {
-                await Task.Run(() =>
-                {
-                    //TODO: For now no overlapping sounds, may want to make it an option in the future
-                    StopCurrentSound();
-
-                    if (!File.Exists(filePath))
-                    {
-                        throw new FileNotFoundException($"Audio file not found: {filePath}");
-                    }
-
-                    _audioFile = new AudioFileReader(filePath);
-
-                    _waveOut = new WaveOutEvent();
-                    _waveOut.Init(_audioFile);
-
-                    var completionSource = new TaskCompletionSource<bool>();
-                    _waveOut.PlaybackStopped += (sender, e) =>
-                    {
-                        completionSource.SetResult(true);
-                    };
-
-                    _waveOut.Play();
-
-                    completionSource.Task.Wait();
-                });
-            }
-            catch (Exception ex)
+            await Task.Run(() =>
             {
                 StopCurrentSound();
 
-                // Proper logging at some point? This works for testing for now
-                System.Diagnostics.Debug.WriteLine($"Error playing sound: {ex.Message}");
-                throw;
-            }
+                if (!File.Exists(filePath))
+                    throw new FileNotFoundException($"Audio file not found: {filePath}");
+
+                // Check if VoiceMeeter is running and find its devices
+                var voiceMeeterAuxDevice = FindVoiceMeeterDevice("Aux"); // For speakers/headphones
+                var voiceMeeterVaioDevice = FindVoiceMeeterDevice("VAIO"); // For microphone
+
+                if (voiceMeeterAuxDevice != null || voiceMeeterVaioDevice != null)
+                {
+                    // VoiceMeeter is available - use it exclusively
+                    System.Diagnostics.Debug.WriteLine("VoiceMeeter detected - using VoiceMeeter routing");
+
+                    if (voiceMeeterAuxDevice != null)
+                    {
+                        _audioFileSpeaker = new AudioFileReader(filePath);
+                        _waveOutSpeaker = new WasapiOut(voiceMeeterAuxDevice, AudioClientShareMode.Shared, false, 50);
+                        _waveOutSpeaker.Init(_audioFileSpeaker);
+                    }
+
+                    if (voiceMeeterVaioDevice != null)
+                    {
+                        _audioFileMic = new AudioFileReader(filePath);
+                        _waveOutMic = new WasapiOut(voiceMeeterVaioDevice, AudioClientShareMode.Shared, false, 50);
+                        _waveOutMic.Init(_audioFileMic);
+                    }
+                }
+                else
+                {
+                    // No VoiceMeeter - use default device directly
+                    System.Diagnostics.Debug.WriteLine("VoiceMeeter not detected - using default audio device");
+                    _audioFileSpeaker = new AudioFileReader(filePath);
+                    _waveOutSpeaker = new WasapiOut(AudioClientShareMode.Shared, 10);
+                    _waveOutSpeaker.Init(_audioFileSpeaker);
+                }
+
+                // Set up completion tracking
+                var tcs = new TaskCompletionSource<bool>();
+                int finishedCount = 0;
+                int expectedCount = (_waveOutSpeaker != null ? 1 : 0) + (_waveOutMic != null ? 1 : 0);
+
+                if (expectedCount == 0)
+                    throw new InvalidOperationException("No audio output devices available");
+
+                EventHandler<StoppedEventArgs> handler = (s, e) =>
+                {
+                    if (Interlocked.Increment(ref finishedCount) == expectedCount)
+                        tcs.SetResult(true);
+                };
+
+                _waveOutSpeaker.PlaybackStopped += handler;
+                _waveOutMic.PlaybackStopped += handler;
+
+                _waveOutSpeaker?.Play();
+                _waveOutMic?.Play();
+
+                tcs.Task.Wait();
+            });
         }
-
-        private void StopCurrentSound()
-        {
-            try
-            {
-                _waveOut?.Stop();
-                _waveOut?.Dispose();
-                _waveOut = null;
-
-                _audioFile?.Dispose();
-                _audioFile = null;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error stopping sound: {ex.Message}");
-            }
-        }
-
-        public void Dispose()
+        catch (Exception ex)
         {
             StopCurrentSound();
+            System.Diagnostics.Debug.WriteLine($"Error playing sound: {ex.Message}");
+            throw;
         }
     }
-}
 
+    private MMDevice FindVoiceMeeterDevice(string type)
+    {
+        try
+        {
+            var enumerator = new MMDeviceEnumerator();
+            var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+
+            foreach (var device in devices)
+            {
+                System.Diagnostics.Debug.WriteLine($"Checking device: {device.FriendlyName}");
+
+                if (type.Equals("Aux", StringComparison.OrdinalIgnoreCase))
+                {
+                    // For speakers/headphones - look for VoiceMeeter Aux Input
+                    if (device.FriendlyName.Contains("VoiceMeeter Aux Input", StringComparison.OrdinalIgnoreCase) ||
+                        device.FriendlyName.Contains("VoiceMeeter Input (VB-Audio VoiceMeeter AUX VAIO)", StringComparison.OrdinalIgnoreCase))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Found VoiceMeeter Aux device: {device.FriendlyName}");
+                        return device;
+                    }
+                }
+                else if (type.Equals("VAIO", StringComparison.OrdinalIgnoreCase))
+                {
+                    // For microphone - look for VoiceMeeter VAIO
+                    if (device.FriendlyName.Contains("VoiceMeeter Input (VB-Audio VoiceMeeter VAIO)", StringComparison.OrdinalIgnoreCase) ||
+                        device.FriendlyName.Contains("CABLE Input", StringComparison.OrdinalIgnoreCase))
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Found VoiceMeeter VAIO device: {device.FriendlyName}");
+                        return device;
+                    }
+                }
+            }
+
+            // Fallback - look for any VB-Audio device containing the type
+            foreach (var device in devices)
+            {
+                if (device.FriendlyName.Contains("VB-Audio", StringComparison.OrdinalIgnoreCase) &&
+                    device.FriendlyName.Contains(type, StringComparison.OrdinalIgnoreCase))
+                {
+                    System.Diagnostics.Debug.WriteLine($"Found VB-Audio device (fallback): {device.FriendlyName}");
+                    return device;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error finding VoiceMeeter {type} device: {ex.Message}");
+        }
+
+        return null;
+    }
+
+    private void ListAllAudioDevices()
+    {
+        try
+        {
+            var enumerator = new MMDeviceEnumerator();
+            var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+
+            System.Diagnostics.Debug.WriteLine("=== ALL AVAILABLE AUDIO DEVICES ===");
+            foreach (var device in devices)
+            {
+                System.Diagnostics.Debug.WriteLine($"- {device.FriendlyName}");
+            }
+            System.Diagnostics.Debug.WriteLine("=== END DEVICE LIST ===");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error listing devices: {ex.Message}");
+        }
+    }
+
+    private void StopCurrentSound()
+    {
+        try
+        {
+            _waveOutSpeaker?.Stop();
+            _waveOutSpeaker?.Dispose();
+            _waveOutSpeaker = null;
+            _audioFileSpeaker?.Dispose();
+            _audioFileSpeaker = null;
+
+            _waveOutMic?.Stop();
+            _waveOutMic?.Dispose();
+            _waveOutMic = null;
+            _audioFileMic?.Dispose();
+            _audioFileMic = null;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error stopping sound: {ex.Message}");
+        }
+    }
+
+    public void Dispose()
+    {
+        StopCurrentSound();
+    }
+}
