@@ -10,6 +10,7 @@ using Soundboard.Services;
 
 namespace Soundboard.ViewModels;
 
+//TODO: figure out where this VM should be here, or a level up.
 public class MainViewModel : INotifyPropertyChanged
 {
     private readonly IAudioService _audioService;
