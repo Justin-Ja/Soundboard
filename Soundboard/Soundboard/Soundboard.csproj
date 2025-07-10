@@ -16,11 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Soundboard.Common\Soundboard.Common.csproj" />
     <ProjectReference Include="..\Soundboard.Services\Soundboard.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
+    <Folder Include="ResourceFiles\" />
   </ItemGroup>
 
 </Project>

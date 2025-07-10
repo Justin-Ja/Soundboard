@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Soundboard"
+        xmlns:views="clr-namespace:Soundboard.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <!--
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -18,12 +20,7 @@
                 FontSize="16"
                 Margin="20"
                 Padding="10"/>
-
-        <TextBlock Grid.Row="1" 
-                   Text="Basic Soundboard - MVVM + DI"
-                   HorizontalAlignment="Center"
-                   Margin="10"
-                   FontStyle="Italic"
-                   Foreground="Gray"/>
+        -->
+        <views:ButtonGrid/>
     </Grid>
 </Window>

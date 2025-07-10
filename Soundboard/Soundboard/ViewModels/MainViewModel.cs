@@ -10,7 +10,7 @@ using Soundboard.Services;
 
 namespace Soundboard.ViewModels;
 
-//TODO: figure out where this VM should be here, or a level up.
+//TODO: move this file a level up.
 public class MainViewModel : INotifyPropertyChanged
 {
     private readonly IAudioService _audioService;
@@ -19,22 +19,26 @@ public class MainViewModel : INotifyPropertyChanged
 
     public ICommand PlaySoundCommand { get; }
     public event PropertyChangedEventHandler PropertyChanged;
+
     public string SoundButtonText => "Play Sound";
 
     public string SoundFilePath
     {
         get => _soundFilePath;
-        set => OnPropertyChanged(nameof(SoundFilePath));
+        set
+        {
+            _soundFilePath = value;
+            OnPropertyChanged();
+        }
     }
 
     public MainViewModel(IAudioService audioService)
     {
         _audioService = audioService;
 
-        //TODO: Hardcoded path for now - probably wont change unless I want ppl to be able to pick out files specifically...
+        // TODO: Hardcoded path for now - probably won't change unless I want people to be able to pick out files specifically...
         // Testing with MP3 for now, but NAudio does support wav and others
         _soundFilePath = Path.Combine(baseDir, "Sounds", "sample");
-        //MessageBox.Show(SoundFilePath);
 
         if (!File.Exists(_soundFilePath))
         {
@@ -48,7 +52,6 @@ public class MainViewModel : INotifyPropertyChanged
     {
         try
         {
-
             if (File.Exists(SoundFilePath))
             {
                 await _audioService.PlaySoundAsync(SoundFilePath);
@@ -63,8 +66,6 @@ public class MainViewModel : INotifyPropertyChanged
             MessageBox.Show($"Error playing sound: {ex.Message}");
         }
     }
-
-
 
     private bool CanPlaySound()
     {

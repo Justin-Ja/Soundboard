@@ -5,6 +5,7 @@ using System.Windows;
 using Autofac;
 using Soundboard.Services;
 using Soundboard.ViewModels;
+using Soundboard.Views;
 using IContainer = Autofac.IContainer;
 
 namespace Soundboard
@@ -14,7 +15,10 @@ namespace Soundboard
     /// </summary>
     public partial class App : Application
     {
-        private IContainer _container;
+        public IContainer _container;
+
+        //Dont like this but this works for app running with button grid. Should look into cleaning up this DI thing i think its gonna spiral soon :(
+        public IContainer Container => _container;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -28,15 +32,18 @@ namespace Soundboard
 
         private void ConfigureContainer()
         {
+            //TODO: We can create the container/builder here, but should pass it into Modules relating to diff projects.
+            //ie we have a Soundboard Module, a Service Module, a settings module (If we add a settings section).
+            //Also would help with keeping this short i dont like a xaml.cs to be long-winded
             var builder = new ContainerBuilder();
 
-            // Register services
+            //we do AsImplementedInterfaces, not As - it should be more consice.
             builder.RegisterType<AudioService>().As<IAudioService>().SingleInstance();
 
-            // Register ViewModels
             builder.RegisterType<MainViewModel>().AsSelf();
 
-            // Register Views
+            builder.RegisterType<ButtonGridViewModel>().AsSelf().SingleInstance();
+
             builder.Register(c => new MainWindow
             {
                 DataContext = c.Resolve<MainViewModel>()
