@@ -37,8 +37,7 @@ namespace Soundboard
             //Also would help with keeping this short i dont like a xaml.cs to be long-winded
             var builder = new ContainerBuilder();
 
-            //we do AsImplementedInterfaces, not As - it should be more consice.
-            builder.RegisterType<AudioService>().As<IAudioService>().SingleInstance();
+            builder.RegisterType<AudioService>().AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<MainViewModel>().AsSelf();
 
