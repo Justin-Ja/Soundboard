@@ -142,27 +142,6 @@ public class AudioService : IAudioService
         return null;
     }
 
-    //Old helper function - probably remove at some point
-    private void ListAllAudioDevices()
-    {
-        try
-        {
-            var enumerator = new MMDeviceEnumerator();
-            var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
-
-            System.Diagnostics.Debug.WriteLine("=== ALL AVAILABLE AUDIO DEVICES ===");
-            foreach (var device in devices)
-            {
-                System.Diagnostics.Debug.WriteLine($"- {device.FriendlyName}");
-            }
-            System.Diagnostics.Debug.WriteLine("=== END DEVICE LIST ===");
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error listing devices: {ex.Message}");
-        }
-    }
-
     private void StopCurrentSound()
     {
         try
