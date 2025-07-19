@@ -15,6 +15,7 @@ public class AudioService : IAudioService
     private AudioFileReader _audioFileSpeaker;
     private WasapiOut _waveOutMic;
     private AudioFileReader _audioFileMic;
+    private readonly int latencyInMs = 50;
 
     public async Task PlaySoundAsync(string filePath)
     {
@@ -27,39 +28,38 @@ public class AudioService : IAudioService
                 if (!File.Exists(filePath))
                     throw new FileNotFoundException($"Audio file not found: {filePath}");
 
-                // Check if VoiceMeeter is running and find its devices
-                var voiceMeeterAuxDevice = FindVoiceMeeterDevice("Aux"); // For speakers/headphones
-                var voiceMeeterVaioDevice = FindVoiceMeeterDevice("VAIO"); // For microphone
+                //Check if VoiceMeeter is running and find its devices
+                var voiceMeeterAuxDevice = FindVoiceMeeterDevice("Aux"); //For speakers/headphones
+                var voiceMeeterVaioDevice = FindVoiceMeeterDevice("VAIO"); //For microphone
 
                 if (voiceMeeterAuxDevice != null || voiceMeeterVaioDevice != null)
                 {
-                    // VoiceMeeter is available - use it exclusively
+                    //VoiceMeeter is available - use it exclusively
                     System.Diagnostics.Debug.WriteLine("VoiceMeeter detected - using VoiceMeeter routing");
 
                     if (voiceMeeterAuxDevice != null)
                     {
                         _audioFileSpeaker = new AudioFileReader(filePath);
-                        _waveOutSpeaker = new WasapiOut(voiceMeeterAuxDevice, AudioClientShareMode.Shared, false, 50);
+                        _waveOutSpeaker = new WasapiOut(voiceMeeterAuxDevice, AudioClientShareMode.Shared, false, latencyInMs);
                         _waveOutSpeaker.Init(_audioFileSpeaker);
                     }
 
                     if (voiceMeeterVaioDevice != null)
                     {
                         _audioFileMic = new AudioFileReader(filePath);
-                        _waveOutMic = new WasapiOut(voiceMeeterVaioDevice, AudioClientShareMode.Shared, false, 50);
+                        _waveOutMic = new WasapiOut(voiceMeeterVaioDevice, AudioClientShareMode.Shared, false, latencyInMs);
                         _waveOutMic.Init(_audioFileMic);
                     }
                 }
                 else
                 {
-                    // No VoiceMeeter - use default device directly
+                    //No VoiceMeeter - use default device directly
                     System.Diagnostics.Debug.WriteLine("VoiceMeeter not detected - using default audio device");
                     _audioFileSpeaker = new AudioFileReader(filePath);
                     _waveOutSpeaker = new WasapiOut(AudioClientShareMode.Shared, 10);
                     _waveOutSpeaker.Init(_audioFileSpeaker);
                 }
 
-                // Set up completion tracking
                 var tcs = new TaskCompletionSource<bool>();
                 int finishedCount = 0;
                 int expectedCount = (_waveOutSpeaker != null ? 1 : 0) + (_waveOutMic != null ? 1 : 0);
@@ -123,6 +123,7 @@ public class AudioService : IAudioService
                 }
             }
 
+            //Backup in case either of the above fail to find a device
             foreach (var device in devices)
             {
                 if (device.FriendlyName.Contains("VB-Audio", StringComparison.OrdinalIgnoreCase) &&

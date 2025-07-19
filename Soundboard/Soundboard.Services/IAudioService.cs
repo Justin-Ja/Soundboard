@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Soundboard.Services;
+﻿namespace Soundboard.Services;
 
 public interface IAudioService : IDisposable
 {

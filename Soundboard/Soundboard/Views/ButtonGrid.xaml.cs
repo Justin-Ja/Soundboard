@@ -42,17 +42,7 @@ public partial class ButtonGrid : UserControl
         }
         catch
         {
-            // Handle case where container isn't available (design time)
-            // You could set a design-time DataContext here if needed
+            throw new Exception("Failed to resolve ButtonGridViewModel");
         }
     }
 }
-
-//public PeristalticPumpScreenViewModel viewModel => (PeristalticPumpScreenViewModel)DataContext;
-
-//public PeristalticPumpHardwareScreen(PeristalticPumpScreenViewModel viewModel)
-//{
-//    DataContext = viewModel;
-//    InitializeComponent();
-//}
-
