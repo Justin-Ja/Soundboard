@@ -3,15 +3,14 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using NAudio.Wave;
-using Soundboard;
 using Soundboard.Commands;
+using Soundboard.Common;
 using Soundboard.Services;
 
 namespace Soundboard.ViewModels;
 
-//TODO: move this file a level up.
-public class MainViewModel : INotifyPropertyChanged
+//TODO: move this file a level up
+public class MainViewModel : BaseViewModel
 {
     private readonly IAudioService _audioService;
     private readonly string baseDir = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.Parent.FullName;
@@ -25,19 +24,15 @@ public class MainViewModel : INotifyPropertyChanged
     public string SoundFilePath
     {
         get => _soundFilePath;
-        set
-        {
-            _soundFilePath = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _soundFilePath, value);
     }
 
+    //TODO: A lot of this is old code to test service, and is outdated. See if its still used and remove
     public MainViewModel(IAudioService audioService)
     {
         _audioService = audioService;
 
-        // TODO: Hardcoded path for now - probably won't change unless I want people to be able to pick out files specifically...
-        // Testing with MP3 for now, but NAudio does support wav and others
+
         _soundFilePath = Path.Combine(baseDir, "Sounds", "sample");
 
         if (!File.Exists(_soundFilePath))
@@ -70,11 +65,6 @@ public class MainViewModel : INotifyPropertyChanged
     private bool CanPlaySound()
     {
         return !string.IsNullOrEmpty(SoundFilePath);
-    }
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
 

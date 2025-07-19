@@ -11,13 +11,16 @@ using System.Windows.Input;
 namespace Soundboard.Common.Components
 {
     //TODO: i think this will become a database table at some point... move it to domain
-    public class SoundButtonModel: INotifyPropertyChanged
+    //TODO: Use setfield
+    public class SoundButtonModel: BaseViewModel
     {
         private string _displayText;
         private string _filePath;
         private ICommand _command;
         private Brush _buttonBrush;
         private Brush _borderBrush;
+
+        public bool IsAddButton { get; set; }
 
         public string DisplayText
         {
@@ -67,15 +70,6 @@ namespace Soundboard.Common.Components
                 _borderBrush = value;
                 OnPropertyChanged();
             }
-        }
-
-        public bool IsAddButton { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

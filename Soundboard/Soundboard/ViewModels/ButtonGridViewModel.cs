@@ -5,21 +5,20 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Soundboard.Commands;
+using Soundboard.Common;
 using Soundboard.Common.Components;
 using Soundboard.Services;
 
 namespace Soundboard.ViewModels;
-public class ButtonGridViewModel : INotifyPropertyChanged
+public class ButtonGridViewModel : BaseViewModel
 {
     private readonly IAudioService _audioService;
     private ObservableCollection<SoundButtonModel> _soundButtons;
-    private const int _gridColumns = 5; // TODO: Is there a better way in C# for global consts? gotta be
+    private const int _gridColumns = 5; 
 
     public ObservableCollection<SoundButtonModel> SoundButtons
     {
@@ -34,21 +33,7 @@ public class ButtonGridViewModel : INotifyPropertyChanged
     public int GridColumns
     {
         get => _gridColumns;
-        //set
-        //{
-        //    _gridColumns = value;
-        //    OnPropertyChanged();
-        //}
     }
-
-    //public ButtonGridViewModel()
-    //{
-    //    // For now, we'll use a mock audio service if none is provided
-    //    _audioService = new AudioService();
-
-    //    SoundButtons = new ObservableCollection<SoundButtonModel>();
-    //    InitializeGrid();
-    //}
 
     public ButtonGridViewModel(IAudioService audioService)
     {
@@ -59,7 +44,6 @@ public class ButtonGridViewModel : INotifyPropertyChanged
 
     private void InitializeGrid()
     {
-        // Start with just the "Add Sound" button
         CreateAddSoundButton();
     }
 
@@ -93,14 +77,12 @@ public class ButtonGridViewModel : INotifyPropertyChanged
             var filePath = openFileDialog.FileName;
             var fileName = Path.GetFileNameWithoutExtension(filePath);
 
-            // Remove the current add button
             var addButton = SoundButtons.FirstOrDefault(b => b.IsAddButton);
             if (addButton != null)
             {
                 SoundButtons.Remove(addButton);
             }
 
-            // Create a new sound button
             var soundButton = new SoundButtonModel
             {
                 DisplayText = fileName,
@@ -113,7 +95,6 @@ public class ButtonGridViewModel : INotifyPropertyChanged
 
             SoundButtons.Add(soundButton);
 
-            // Add a new "Add Sound" button at the end
             CreateAddSoundButton();
         }
     }
@@ -135,15 +116,5 @@ public class ButtonGridViewModel : INotifyPropertyChanged
         {
             MessageBox.Show($"Error playing sound: {ex.Message}");
         }
-    }
-
-
-    //Is it possible to move this property thing to a super class for VMs? probably :/
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
