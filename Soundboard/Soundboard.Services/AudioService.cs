@@ -9,6 +9,7 @@ using NAudio.Wave;
 
 namespace Soundboard.Services;
 
+//TODO: Move into the IAudoService file, keeps everything together and should keep overall file count low
 public class AudioService : IAudioService
 {
     private WasapiOut _waveOutSpeaker;
