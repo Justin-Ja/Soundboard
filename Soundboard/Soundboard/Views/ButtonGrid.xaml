@@ -50,16 +50,16 @@
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"/>
                                 <TextBlock Grid.Row="1" 
-           Text="{Binding KeyBindingDisplay}"
-           FontSize="10"
-           Foreground="Gray"
-           HorizontalAlignment="Center"
-           Margin="2"
-           Visibility="{Binding IsAddButton, Converter={StaticResource InverseBooleanToVisibility}}"
-           Cursor="Hand">
+                                       Text="{Binding KeyBindingDisplay}"
+                                       FontSize="10"
+                                       Foreground="Gray"
+                                       HorizontalAlignment="Center"
+                                       Margin="2"
+                                       Visibility="{Binding IsAddButton, Converter={StaticResource InverseBooleanToVisibility}}"
+                                       Cursor="Hand">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Gesture="LeftClick"
-                      Command="{Binding SetKeyBindingCommand}" />
+                                            Command="{Binding SetKeyBindingCommand}" />
                                     </TextBlock.InputBindings>
                                 </TextBlock>
                             </Grid>
