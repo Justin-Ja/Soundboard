@@ -70,6 +70,8 @@ public class SoundButtonModel: BaseViewModel
         }
     }
 
+    public ICommand SetKeyBindingCommand { get; set; }
+
     public string KeyBindingDisplay
     {
         get

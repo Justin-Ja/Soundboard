@@ -45,7 +45,7 @@ public class ButtonGridViewModel : BaseViewModel
         InitializeGrid();
     }
 
-    //All this needs to be moved to another VM
+    //All this needs to be moved to another VM/file
     private bool CanSetKeyBinding(SoundButtonModel button)
     {
         return button != null && !button.IsAddButton;
@@ -53,27 +53,28 @@ public class ButtonGridViewModel : BaseViewModel
 
     private void SetKeyBinding(SoundButtonModel button)
     {
+
         if (button == null || button.IsAddButton) return;
+
 
         var dialog = new KeyBindingDialog(button.DisplayText, button.BoundKey, button.ModifierKeys)
         {
             Owner = System.Windows.Application.Current.MainWindow
         };
 
-        if (dialog.ShowDialog() == true)
+        var test = dialog.ShowDialog();
+        if (test == true)
         {
-            // Clear existing binding if any
             ClearKeyBinding(button);
 
             if (dialog.IsCleared)
             {
-                // User chose to clear the binding
                 button.BoundKey = null;
                 button.ModifierKeys = ModifierKeys.None;
             }
             else if (dialog.SelectedKey.HasValue)
             {
-                // Check if key combination is already in use
+                //Check if key combination is already in use
                 var existingButton = SoundButtons.FirstOrDefault(b =>
                     !b.IsAddButton &&
                     b != button &&
@@ -90,7 +91,6 @@ public class ButtonGridViewModel : BaseViewModel
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        // Clear the existing button's binding
                         ClearKeyBinding(existingButton);
                         existingButton.BoundKey = null;
                         existingButton.ModifierKeys = ModifierKeys.None;
@@ -101,11 +101,9 @@ public class ButtonGridViewModel : BaseViewModel
                     }
                 }
 
-                // Set new binding
                 button.BoundKey = dialog.SelectedKey;
                 button.ModifierKeys = dialog.SelectedModifiers;
 
-                // Register the hotkey
                 RegisterHotkey(button);
             }
         }
@@ -153,7 +151,6 @@ public class ButtonGridViewModel : BaseViewModel
 
     private Keys ConvertToWinFormsKey(Key wpfKey)
     {
-//add numpad keys
         return wpfKey switch
         {
             Key.A => Keys.A,
@@ -192,6 +189,21 @@ public class ButtonGridViewModel : BaseViewModel
             Key.D7 => Keys.D7,
             Key.D8 => Keys.D8,
             Key.D9 => Keys.D9,
+            Key.NumPad0 => Keys.NumPad0,
+            Key.NumPad1 => Keys.NumPad1,
+            Key.NumPad2 => Keys.NumPad2,
+            Key.NumPad3 => Keys.NumPad3,
+            Key.NumPad4 => Keys.NumPad4,
+            Key.NumPad5 => Keys.NumPad5,
+            Key.NumPad6 => Keys.NumPad6,
+            Key.NumPad7 => Keys.NumPad7,
+            Key.NumPad8 => Keys.NumPad8,
+            Key.NumPad9 => Keys.NumPad9,
+            Key.Decimal => Keys.Decimal,
+            Key.Add => Keys.Add,
+            Key.Subtract => Keys.Subtract,
+            Key.Multiply => Keys.Multiply,
+            Key.Divide => Keys.Divide,
             Key.F1 => Keys.F1,
             Key.F2 => Keys.F2,
             Key.F3 => Keys.F3,
@@ -232,6 +244,7 @@ public class ButtonGridViewModel : BaseViewModel
         OnPropertyChanged(nameof(SoundButtons));
     }
 
+    //TODO: Check if we need async, not for this function but for the above relayCommands
     private async Task AddSoundAsync()
     {
         var openFileDialog = new OpenFileDialog
@@ -259,8 +272,9 @@ public class ButtonGridViewModel : BaseViewModel
                 IsAddButton = false,
                 ButtonBrush = Brushes.LightBlue,
                 BorderBrush = Brushes.DarkBlue,
-                Command = new RelayCommand(async () => await PlaySoundAsync(filePath))
+                Command = new RelayCommand(async () => await PlaySoundAsync(filePath)),
             };
+            soundButton.SetKeyBindingCommand = new RelayCommand(() => SetKeyBinding(soundButton));
 
             SoundButtons.Add(soundButton);
 
