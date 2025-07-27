@@ -20,11 +20,7 @@ public class KeyBindingDialogViewModel : BaseViewModel
     public string SoundName
     {
         get => _soundName;
-        set
-        {
-            _soundName = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _soundName, value);
     }
 
     public Key? SelectedKey
@@ -53,25 +49,16 @@ public class KeyBindingDialogViewModel : BaseViewModel
     public string KeyDisplayText
     {
         get => _keyDisplayText;
-        set
-        {
-            _keyDisplayText = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _keyDisplayText, value);
     }
 
     public bool IsOkEnabled
     {
         get => _isOkEnabled;
-        set
-        {
-            _isOkEnabled = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _isOkEnabled, value);
     }
 
     public bool IsCleared { get; private set; }
-
     public ICommand ClearBindingCommand { get; }
     public ICommand OkCommand { get; }
     public ICommand CancelCommand { get; }

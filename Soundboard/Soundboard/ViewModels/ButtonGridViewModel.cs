@@ -24,11 +24,7 @@ public class ButtonGridViewModel : BaseViewModel
     public ObservableCollection<SoundButtonModel> SoundButtons
     {
         get => _soundButtons;
-        set
-        {
-            _soundButtons = value;
-            OnPropertyChanged();
-        }
+        set => SetProperty(ref _soundButtons, value);
     }
 
     public int GridColumns => _gridColumns;
