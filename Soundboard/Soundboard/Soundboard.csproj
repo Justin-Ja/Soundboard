@@ -25,7 +25,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ResourceFiles\" />
+    <Compile Update="ResourceFiles\ButtonGridText.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ButtonGridText.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ResourceFiles\KeyBindingDialogText.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>KeyBindingDialogText.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ResourceFiles\ButtonGridText.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ButtonGridText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ResourceFiles\KeyBindingDialogText.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KeyBindingDialogText.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
