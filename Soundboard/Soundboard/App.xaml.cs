@@ -39,6 +39,8 @@ namespace Soundboard
 
             builder.RegisterType<AudioService>().AsImplementedInterfaces().SingleInstance();
 
+            builder.RegisterType<GlobalHotkeyService>().AsImplementedInterfaces().SingleInstance();
+
             builder.RegisterType<MainViewModel>().AsSelf();
 
             builder.RegisterType<ButtonGridViewModel>().AsSelf().SingleInstance();

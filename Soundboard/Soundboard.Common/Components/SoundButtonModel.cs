@@ -2,74 +2,90 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Soundboard.Common.Components
-{
+namespace Soundboard.Common.Components;
+
     //TODO: i think this will become a database table at some point... move it to domain
-    //TODO: Use setfield
-    public class SoundButtonModel: BaseViewModel
+    //also fix the warnings with constructors
+public class SoundButtonModel: BaseViewModel
+{
+    private string _displayText;
+    private string _filePath;
+    private ICommand _command;
+    private Brush _buttonBrush;
+    private Brush _borderBrush;
+    private Key? _boundKey;
+    private ModifierKeys _modifierKeys;
+
+    public bool IsAddButton { get; set; }
+    public bool HasKeyBinding => BoundKey.HasValue;
+
+    public string DisplayText
     {
-        private string _displayText;
-        private string _filePath;
-        private ICommand _command;
-        private Brush _buttonBrush;
-        private Brush _borderBrush;
+        get => _displayText;
+        set => SetProperty(ref _displayText, value);
+    }
 
-        public bool IsAddButton { get; set; }
+    public string FilePath
+    {
+        get => _filePath;
+        set => SetProperty(ref _filePath, value);
+    }
 
-        public string DisplayText
+    public ICommand Command
+    {
+        get => _command;
+        set => SetProperty(ref _command, value);
+    }
+
+    public Brush ButtonBrush
+    {
+        get => _buttonBrush ?? Brushes.LightBlue;
+        set => SetProperty(ref _buttonBrush, value);
+    }
+
+    public Brush BorderBrush
+    {
+        get => _borderBrush ?? Brushes.DarkBlue;
+        set => SetProperty(ref _borderBrush, value);
+    }
+    public Key? BoundKey
+    {
+        get => _boundKey;
+        set
         {
-            get => _displayText;
-            set
-            {
-                _displayText = value;
-                OnPropertyChanged();
-            }
+            SetProperty(ref _boundKey, value);
+            OnPropertyChanged(nameof(KeyBindingDisplay));
         }
+    }
 
-        public string FilePath
+    public ModifierKeys ModifierKeys
+    {
+        get => _modifierKeys;
+        set
         {
-            get => _filePath;
-            set
-            {
-                _filePath = value;
-                OnPropertyChanged();
-            }
+            SetProperty(ref _modifierKeys, value);
+            OnPropertyChanged(nameof(KeyBindingDisplay));
         }
+    }
 
-        public ICommand Command
-        {
-            get => _command;
-            set
-            {
-                _command = value;
-                OnPropertyChanged();
-            }
-        }
+    public ICommand SetKeyBindingCommand { get; set; }
 
-        public Brush ButtonBrush
+    public string KeyBindingDisplay
+    {
+        get
         {
-            get => _buttonBrush ?? Brushes.LightBlue;
-            set
-            {
-                _buttonBrush = value;
-                OnPropertyChanged();
-            }
-        }
+            if (!BoundKey.HasValue) return "No binding";
 
-        public Brush BorderBrush
-        {
-            get => _borderBrush ?? Brushes.DarkBlue;
-            set
-            {
-                _borderBrush = value;
-                OnPropertyChanged();
-            }
+            var parts = new List<string>();
+            if (ModifierKeys.HasFlag(ModifierKeys.Control)) parts.Add("Ctrl");
+            if (ModifierKeys.HasFlag(ModifierKeys.Alt)) parts.Add("Alt");
+            if (ModifierKeys.HasFlag(ModifierKeys.Shift)) parts.Add("Shift");
+            if (ModifierKeys.HasFlag(ModifierKeys.Windows)) parts.Add("Win");
+
+            parts.Add(BoundKey.Value.ToString());
+            return string.Join(" + ", parts);
         }
     }
 }
