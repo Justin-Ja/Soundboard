@@ -227,14 +227,13 @@ public class ButtonGridViewModel : BaseViewModel
     private void CreateAddSoundButton()
     {
         //TODO: RESX Files for UI strings.
-        var addButton = new SoundButtonModel
-        {
-            DisplayText = "+ Add Sound",
-            IsAddButton = true,
-            ButtonBrush = Brushes.LightGreen,
-            BorderBrush = Brushes.DarkGreen,
-            Command = new RelayCommand(async () => await AddSoundAsync())
-        };
+        var addButton = new SoundButtonModel(
+            displayText: "+ Add Sound",
+            isAdd: true,
+            buttonBrush: Brushes.LightGreen,
+            buttonBorderBrush: Brushes.DarkGreen,
+            command: new RelayCommand(async () => await AddSoundAsync())
+        );
 
         SoundButtons.Add(addButton);
         OnPropertyChanged(nameof(SoundButtons));
@@ -262,14 +261,14 @@ public class ButtonGridViewModel : BaseViewModel
             }
 
             var soundButton = new SoundButtonModel
-            {
-                DisplayText = fileName,
-                FilePath = filePath,
-                IsAddButton = false,
-                ButtonBrush = Brushes.LightBlue,
-                BorderBrush = Brushes.DarkBlue,
-                Command = new RelayCommand(async () => await PlaySoundAsync(filePath)),
-            };
+            (
+                displayText: fileName,
+                FilePath : filePath,
+                isAdd : false,
+                buttonBrush : Brushes.LightBlue,
+                buttonBorderBrush : Brushes.DarkBlue,
+                command : new RelayCommand(async () => await PlaySoundAsync(filePath))
+            );
             soundButton.SetKeyBindingCommand = new RelayCommand(() => SetKeyBinding(soundButton));
 
             SoundButtons.Add(soundButton);

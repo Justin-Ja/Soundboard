@@ -6,19 +6,18 @@ using System.Windows.Input;
 
 namespace Soundboard.Common.Components;
 
-    //TODO: i think this will become a database table at some point... move it to domain
-    //also fix the warnings with constructors
+//TODO: i think this will become a database table at some point... move it to domain
 public class SoundButtonModel: BaseViewModel
 {
     private string _displayText;
-    private string _filePath;
+    private string? _filePath;
+    private bool _isAddButton;
     private ICommand _command;
     private Brush _buttonBrush;
     private Brush _borderBrush;
     private Key? _boundKey;
     private ModifierKeys _modifierKeys;
 
-    public bool IsAddButton { get; set; }
     public bool HasKeyBinding => BoundKey.HasValue;
 
     public string DisplayText
@@ -27,10 +26,16 @@ public class SoundButtonModel: BaseViewModel
         set => SetProperty(ref _displayText, value);
     }
 
-    public string FilePath
+    public string? FilePath
     {
         get => _filePath;
         set => SetProperty(ref _filePath, value);
+    }
+
+    public bool IsAddButton
+    {
+        get => _isAddButton;
+        set => SetProperty(ref _isAddButton, value);
     }
 
     public ICommand Command
@@ -41,13 +46,13 @@ public class SoundButtonModel: BaseViewModel
 
     public Brush ButtonBrush
     {
-        get => _buttonBrush ?? Brushes.LightBlue;
+        get => _buttonBrush;
         set => SetProperty(ref _buttonBrush, value);
     }
 
     public Brush BorderBrush
     {
-        get => _borderBrush ?? Brushes.DarkBlue;
+        get => _borderBrush;
         set => SetProperty(ref _borderBrush, value);
     }
     public Key? BoundKey
@@ -70,7 +75,7 @@ public class SoundButtonModel: BaseViewModel
         }
     }
 
-    public ICommand SetKeyBindingCommand { get; set; }
+    public ICommand? SetKeyBindingCommand { get; set; }
 
     public string KeyBindingDisplay
     {
@@ -87,5 +92,26 @@ public class SoundButtonModel: BaseViewModel
             parts.Add(BoundKey.Value.ToString());
             return string.Join(" + ", parts);
         }
+    }
+    
+    //Constructor for "add sound" button
+    public SoundButtonModel(string displayText, bool isAdd, Brush buttonBrush, Brush buttonBorderBrush, ICommand command)
+    {
+        _displayText = displayText;
+        _isAddButton = isAdd;
+        _buttonBrush = buttonBrush;
+        _borderBrush = buttonBorderBrush;
+        _command = command;
+    }
+
+    //Normal sound button constructor, has a file path
+    public SoundButtonModel(string displayText, string FilePath, bool isAdd, Brush buttonBrush, Brush buttonBorderBrush, ICommand command)
+    {
+        _displayText = displayText;
+        _filePath = FilePath;
+        _isAddButton = isAdd;
+        _buttonBrush = buttonBrush;
+        _borderBrush = buttonBorderBrush;
+        _command = command;
     }
 }
