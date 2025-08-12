@@ -15,12 +15,23 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NAudio.Sdl2" Version="2.2.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Soundboard.Common\Soundboard.Common.csproj" />
+    <ProjectReference Include="..\Soundboard.Domain.DataAccess\Soundboard.Domain.DataAccess.csproj" />
     <ProjectReference Include="..\Soundboard.Services\Soundboard.Services.csproj" />
   </ItemGroup>
 
