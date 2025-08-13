@@ -6,7 +6,6 @@ using System.Windows.Input;
 
 namespace Soundboard.Common.Components;
 
-//TODO: i think this will become a database table at some point... move it to domain
 public class SoundButtonModel: BaseViewModel
 {
     private string _displayText;

@@ -57,6 +57,8 @@ namespace Soundboard
 
             builder.RegisterType<MainViewModel>().AsSelf();
 
+            builder.RegisterType<HotkeyManager>().As<IHotkeyManager>().SingleInstance();
+
             builder.RegisterType<ButtonGridViewModel>().AsSelf().SingleInstance();
 
             builder.Register(c => new MainWindow
