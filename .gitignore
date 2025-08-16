@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 # Personal
 soundboard.db
+*.mp3
+*.mp4
