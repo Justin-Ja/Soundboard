@@ -8,19 +8,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <!--
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+ 
+        <views:CrudToolbar Grid.Row="0"/>
 
-        <Button Grid.Row="0" 
-                Content="{Binding SoundButtonText}"
-                Command="{Binding PlaySoundCommand}"
-                FontSize="16"
-                Margin="20"
-                Padding="10"/>
-        -->
-        <views:ButtonGrid/>
+        <views:ButtonGrid Grid.Row="1"/>
     </Grid>
 </Window>

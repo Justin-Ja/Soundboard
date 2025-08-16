@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Soundboard.Views.CrudToolbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Soundboard.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="600">
+    <Grid>
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0,10,0,0">
+            
+            <!-- Not urgent, but these buttons can def look much better -->
+            <Button Content="New Grid"
+                    Command="{Binding NewGridCommand}"
+                    Margin="0,0,10,0"
+                    Padding="15,5"
+                    MinWidth="80"
+                    ToolTip="Create a new button grid"/>
+
+            <Button Content="Load"
+                    Command="{Binding LoadGridCommand}"
+                    Margin="0,0,10,0"
+                    Padding="15,5"
+                    MinWidth="80"
+                    ToolTip="Load an existing button grid"/>
+
+            <Button Content="Save"
+                    Command="{Binding SaveGridCommand}"
+                    Margin="0,0,10,0"
+                    Padding="15,5"
+                    MinWidth="80"
+                    ToolTip="Save current button grid"/>
+
+            <Button Content="Save As"
+                    Command="{Binding SaveAsGridCommand}"
+                    Margin="0,0,0,0"
+                    Padding="15,5"
+                    MinWidth="80"
+                    ToolTip="Save current button grid with a new name"/>
+
+            <TextBlock Text="{Binding CurrentGridName, StringFormat='Current Grid: {0}'}"
+                       VerticalAlignment="Center"
+                       Margin="10,0,0,0"
+                       FontWeight="SemiBold"
+                       Foreground="DarkBlue"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

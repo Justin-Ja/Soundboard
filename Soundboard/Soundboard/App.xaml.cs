@@ -61,6 +61,10 @@ namespace Soundboard
 
             builder.RegisterType<ButtonGridViewModel>().AsSelf().SingleInstance();
 
+            builder.RegisterType<CrudToolbar>().AsSelf();
+            builder.RegisterType<CrudToolbarViewModel>().As<ICrudToolbarViewModel>().SingleInstance();
+
+
             builder.Register(c => new MainWindow
             {
                 DataContext = c.Resolve<MainViewModel>()
