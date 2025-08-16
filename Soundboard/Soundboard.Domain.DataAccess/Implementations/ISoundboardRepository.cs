@@ -9,9 +9,9 @@ namespace Soundboard.Domain.DataAccess.Implementations;
 public interface ISoundboardRepository
 {
     Task<List<SoundButton>> GetAllSoundButtonsAsync();
-    Task<List<SoundButtonGridLayout>> GetAllCategoriesAsync();
+    Task<List<SoundButtonGridLayout>> GetAllButtonGridsAsync();
     Task<SoundButton> AddSoundButtonAsync(SoundButton soundButton);
-    Task<SoundButtonGridLayout> AddCategoryAsync(SoundButtonGridLayout category);
+    Task<SoundButtonGridLayout> AddButtonGridAsync(SoundButtonGridLayout category);
     Task UpdateSoundButtonAsync(SoundButton soundButton);
     Task DeleteSoundButtonAsync(Guid id);
     Task<SoundButton> GetSoundButtonByIdAsync(Guid id);

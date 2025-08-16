@@ -24,7 +24,7 @@ public class SoundboardRepository : ISoundboardRepository
             .ToListAsync();
     }
 
-    public async Task<List<SoundButtonGridLayout>> GetAllCategoriesAsync()
+    public async Task<List<SoundButtonGridLayout>> GetAllButtonGridsAsync()
     {
         return await _context.GridLayouts
             .Include(c => c.SoundButtons)
@@ -38,7 +38,7 @@ public class SoundboardRepository : ISoundboardRepository
         return soundButton;
     }
 
-    public async Task<SoundButtonGridLayout> AddCategoryAsync(SoundButtonGridLayout gridLayout)
+    public async Task<SoundButtonGridLayout> AddButtonGridAsync(SoundButtonGridLayout gridLayout)
     {
         _context.GridLayouts.Add(gridLayout);
         await _context.SaveChangesAsync();
