@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Soundboard.Domain.DataAccess.Implementations;
+using Soundboard.Views;
 
 namespace Soundboard.Services;
 
@@ -33,9 +34,10 @@ public class Prompter : IPrompter
 
     public SoundButtonGridLayout PromptForGridSelection(string title, List<SoundButtonGridLayout> availableGrids)
     {
-        var gridSelectionWindow = new GridSelectionWindow(title, availableGrids);
-        var result = gridSelectionWindow.ShowDialog();
+        // var gridSelectionWindow = new GridSelectionWindow(title, availableGrids);
+        //var result = gridSelectionWindow.ShowDialog();
 
-        return result == true ? gridSelectionWindow.SelectedGrid : null;
+        //return result == true ? gridSelectionWindow.SelectedGrid : null;
+        return new SoundButtonGridLayout();
     }
 }
