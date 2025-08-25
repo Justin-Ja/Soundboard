@@ -61,9 +61,12 @@ namespace Soundboard
 
             builder.RegisterType<ButtonGridViewModel>().AsSelf().SingleInstance();
 
-            builder.RegisterType<CrudToolbar>().AsSelf();
-            builder.RegisterType<CrudToolbarViewModel>().As<ICrudToolbarViewModel>().SingleInstance();
+            builder.RegisterType<CrudToolbarViewModel>().As<ICrudToolbarViewModel>().AsSelf().SingleInstance();
 
+            builder.RegisterType<Prompter>().As<IPrompter>().SingleInstance();
+
+            builder.RegisterType<PromptWindow>().AsSelf();
+            builder.RegisterType<GridSelectionWindow>().AsSelf();
 
             builder.Register(c => new MainWindow
             {

@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Autofac;
+using Soundboard;
+using Soundboard.ViewModels;
 
 namespace Soundboard.Views
 {
@@ -23,6 +26,50 @@ namespace Soundboard.Views
         public CrudToolbar()
         {
             InitializeComponent();
+            
+            if(DataContext == null)
+            {
+                SetDataContextFromContainer();
+            }
+        }
+
+        private void SetDataContextFromContainer()
+        {
+            try
+            {
+                var app = Application.Current as App;
+                if (app?.Container != null)
+                {
+                    DataContext = app.Container.Resolve<CrudToolbarViewModel>();
+                }
+            }
+            catch
+            {
+                throw new Exception("Failed to resolve CrudToolbarViewModel");
+            }
         }
     }
 }
+
+// Set DataContext if not already set (design time vs runtime)
+//if (DataContext == null)
+//{
+//    SetDataContextFromContainer();
+//}
+//    }
+
+//private void SetDataContextFromContainer()
+//{
+//    try
+//    {
+//        var app = Application.Current as App;
+//        if (app?.Container != null)
+//        {
+//            DataContext = app.Container.Resolve<ButtonGridViewModel>();
+//        }
+//    }
+//    catch
+//    {
+//        throw new Exception("Failed to resolve ButtonGridViewModel");
+//    }
+//}
