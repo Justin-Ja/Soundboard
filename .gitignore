@@ -484,6 +484,6 @@ $RECYCLE.BIN/
 *.swp
 
 # Personal
-soundboard.db
+soundboard.db*
 *.mp3
 *.mp4
