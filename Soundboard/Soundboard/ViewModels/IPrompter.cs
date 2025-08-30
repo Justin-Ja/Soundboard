@@ -34,10 +34,9 @@ public class Prompter : IPrompter
 
     public SoundButtonGridLayout PromptForGridSelection(string title, List<SoundButtonGridLayout> availableGrids)
     {
-        // var gridSelectionWindow = new GridSelectionWindow(title, availableGrids);
-        //var result = gridSelectionWindow.ShowDialog();
+        var gridSelectionWindow = new GridSelectionWindow(title, availableGrids);
+        var result = gridSelectionWindow.ShowDialog();
 
-        //return result == true ? gridSelectionWindow.SelectedGrid : null;
-        return new SoundButtonGridLayout();
+        return result == true ? gridSelectionWindow.SelectedGrid : null;
     }
 }
