@@ -7,10 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="600">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Margin="0,10,0,0">
+                    Grid.Row="0"
+                    Margin="0,10,10,0">
             
             <!-- Not urgent, but these buttons can def look much better -->
             <Button Content="New Grid"
@@ -40,13 +46,18 @@
                     Padding="15,5"
                     MinWidth="80"
                     ToolTip="Save current button grid with a new name"/>
+        </StackPanel>
 
+        <StackPanel Orientation="Horizontal" 
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Grid.Row="1"
+                  Margin="0,10,0,0">
             <TextBlock Text="{Binding CurrentGridName, StringFormat='Current Grid: {0}'}"
                        VerticalAlignment="Center"
-                       Margin="10,0,0,0"
+                       Margin="0,10,10,0"
                        FontWeight="SemiBold"
                        Foreground="DarkBlue"/>
-
         </StackPanel>
     </Grid>
 </UserControl>
