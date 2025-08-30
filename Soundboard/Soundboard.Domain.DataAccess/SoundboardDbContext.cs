@@ -34,6 +34,10 @@ public class SoundboardDbContext : DbContext
         {
             entity.HasKey(e => e.Guid);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(127);
+
+            entity.HasMany(e => e.SoundButtons)
+              .WithOne(s => s.GridLayout)
+              .HasForeignKey(s => s.GridId);
         });
     }
 }
