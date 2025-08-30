@@ -104,10 +104,10 @@ public class SoundButtonModel: BaseViewModel
     }
 
     //Normal sound button constructor, has a file path
-    public SoundButtonModel(string displayText, string FilePath, bool isAdd, Brush buttonBrush, Brush buttonBorderBrush, ICommand command)
+    public SoundButtonModel(string displayText, string filePath, bool isAdd, Brush buttonBrush, Brush buttonBorderBrush, ICommand command)
     {
         _displayText = displayText;
-        _filePath = FilePath;
+        _filePath = filePath;
         _isAddButton = isAdd;
         _buttonBrush = buttonBrush;
         _borderBrush = buttonBorderBrush;
