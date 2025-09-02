@@ -26,6 +26,7 @@ public class Prompter : IPrompter
         return result == true ? promptWindow.ResponseText : null;
     }
 
+    //TODO: Why a message box with yes no??? The saves/loads already occur when these appear so its worthless???? Change to just a message box with an okay button.
     public bool PromptForConfirmation(string title, string message)
     {
         var result = MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question);

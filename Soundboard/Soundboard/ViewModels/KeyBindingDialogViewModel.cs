@@ -82,7 +82,7 @@ public class KeyBindingDialogViewModel : BaseViewModel
 
     public void OnKeyPressed(Key key, ModifierKeys modifiers)
     {
-        //Ignore modifier-only presses
+        //"Ignore" modifier-only presses
         if (key == Key.LeftCtrl || key == Key.RightCtrl ||
             key == Key.LeftAlt || key == Key.RightAlt ||
             key == Key.LeftShift || key == Key.RightShift ||

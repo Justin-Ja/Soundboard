@@ -103,7 +103,7 @@ public class AudioService : IAudioService
 
                 if (type.Equals("Aux", StringComparison.OrdinalIgnoreCase))
                 {
-                    //For speakers/headphones - look for VoiceMeeter Aux Input
+                    //For speakers/headphones look for VoiceMeeter Aux Input
                     if (device.FriendlyName.Contains("VoiceMeeter Aux Input", StringComparison.OrdinalIgnoreCase) ||
                         device.FriendlyName.Contains("VoiceMeeter Input (VB-Audio VoiceMeeter AUX VAIO)", StringComparison.OrdinalIgnoreCase))
                     {
@@ -113,7 +113,7 @@ public class AudioService : IAudioService
                 }
                 else if (type.Equals("VAIO", StringComparison.OrdinalIgnoreCase))
                 {
-                    //For microphone - look for VoiceMeeter VAIO
+                    //For microphone look for VoiceMeeter VAIO
                     if (device.FriendlyName.Contains("VoiceMeeter Input (VB-Audio VoiceMeeter VAIO)", StringComparison.OrdinalIgnoreCase) ||
                         device.FriendlyName.Contains("CABLE Input", StringComparison.OrdinalIgnoreCase))
                     {

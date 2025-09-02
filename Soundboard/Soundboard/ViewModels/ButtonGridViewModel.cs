@@ -70,6 +70,7 @@ public class ButtonGridViewModel : BaseViewModel
         CreateAddSoundButton();
     }
 
+    //TODO: We create a new soundb button on loads (thats fine) AND on adding a sound (not so fine). Look into another way to do this without having to "new" up a model every time.
     private void CreateAddSoundButton()
     {
         //TODO: RESX Files for UI strings.
