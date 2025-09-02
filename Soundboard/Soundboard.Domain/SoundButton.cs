@@ -16,5 +16,7 @@ public class SoundButton : DomainObject
     public Guid GridId { get; set; }
     public SoundButtonGridLayout GridLayout { get; set; }
     public bool IsEnabled { get; set; } = true;
+    public int? BoundKeyCode { get; set; } 
+    public int? BoundKeyModifiers { get; set; }
 }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Soundboard.Domain.DataAccess;
 
@@ -10,9 +11,11 @@ using Soundboard.Domain.DataAccess;
 namespace Soundboard.Domain.DataAccess.Migrations
 {
     [DbContext(typeof(SoundboardDbContext))]
-    partial class SoundboardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250830220215_AddHotkeyFieldsOnLoad")]
+    partial class AddHotkeyFieldsOnLoad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.7");

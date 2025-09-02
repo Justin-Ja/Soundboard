@@ -25,6 +25,8 @@ public class SoundboardDbContext : DbContext
             entity.HasKey(e => e.Guid);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
             entity.Property(e => e.FilePath).IsRequired();
+            entity.Property(e => e.BoundKeyCode);
+            entity.Property(e => e.BoundKeyModifiers);
             entity.HasOne(e => e.GridLayout)
                   .WithMany(c => c.SoundButtons)
                   .HasForeignKey(e => e.GridId);
