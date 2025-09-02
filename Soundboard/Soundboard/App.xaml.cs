@@ -79,7 +79,7 @@ namespace Soundboard
             InitializeDatabase();
         }
 
-        //This could be done via dependency injection but im lazy and just want this to work :/
+        //This could be done via dependency injection but I just want this to work :/
         private void ConnectViewModels()
         {
             var buttonGridViewModel = _container.Resolve<ButtonGridViewModel>();
