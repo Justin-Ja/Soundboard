@@ -28,6 +28,7 @@ namespace Soundboard
             base.OnStartup(e);
 
             ConfigureContainer();
+            ConnectViewModels();
 
             var mainWindow = _container.Resolve<MainWindow>();
             mainWindow.Show();
@@ -76,6 +77,19 @@ namespace Soundboard
             _container = builder.Build();
 
             InitializeDatabase();
+        }
+
+        //This could be done via dependency injection but im lazy and just want this to work :/
+        private void ConnectViewModels()
+        {
+            var buttonGridViewModel = _container.Resolve<ButtonGridViewModel>();
+            var crudToolbarViewModel = _container.Resolve<CrudToolbarViewModel>();
+
+            crudToolbarViewModel.GridChanged += (sender, e) =>
+                buttonGridViewModel.HandleGridChanged(e.Grid, e.Operation);
+
+            crudToolbarViewModel.GridDataRequested += (sender, e) =>
+                e.GridData = buttonGridViewModel.GetCurrentGridData();
         }
 
         private void InitializeDatabase()

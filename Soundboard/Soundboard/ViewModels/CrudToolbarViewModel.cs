@@ -72,7 +72,7 @@ public class CrudToolbarViewModel : BaseViewModel, ICrudToolbarViewModel
     {
         try
         {
-            var gridName = _prompter.PromptForText("New Grid", "Enter a name for the new button grid:", "New Grid");
+            var gridName = _prompter.PromptForText("New Grid", "Enter a name for the new button grid:", "");
 
             if (string.IsNullOrWhiteSpace(gridName))
                 return;
@@ -84,7 +84,7 @@ public class CrudToolbarViewModel : BaseViewModel, ICrudToolbarViewModel
                 SoundButtons = new List<SoundButton>()
             };
 
-            var savedGrid = await _repository.AddButtonGridAsync(newGrid);
+            var savedGrid = await _repository.AddButtonGridWithSoundButtonsAsync(newGrid);
             CurrentGrid = savedGrid;
 
             //Notify ButtonGrid to load this new grid
@@ -134,10 +134,8 @@ public class CrudToolbarViewModel : BaseViewModel, ICrudToolbarViewModel
             if (gridData != null)
             {
                 CurrentGrid.SoundButtons = gridData;
+                var updatedGrid = await _repository.UpdateButtonGridAsync(CurrentGrid);
             }
-
-            //Since we're updating an existing grid, might need an update method in the repository
-            //For now, assuming the grid is already tracked and changes are auto-saved
 
             _prompter.PromptForConfirmation("Success", $"Grid '{CurrentGrid.Name}' saved successfully!");
         }
@@ -168,7 +166,7 @@ public class CrudToolbarViewModel : BaseViewModel, ICrudToolbarViewModel
                 SoundButtons = gridData ?? new List<SoundButton>()
             };
 
-            var savedGrid = await _repository.AddButtonGridAsync(newGrid);
+            var savedGrid = await _repository.AddButtonGridWithSoundButtonsAsync(newGrid);
             CurrentGrid = savedGrid;
 
             _prompter.PromptForConfirmation("Success", $"Grid saved as '{newGrid.Name}' successfully!");
