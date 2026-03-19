@@ -56,7 +56,7 @@ public class AudioService : IAudioService
                     //No VoiceMeeter - use default device directly
                     System.Diagnostics.Debug.WriteLine("VoiceMeeter not detected - using default audio device");
                     _audioFileSpeaker = new AudioFileReader(filePath);
-                    _waveOutSpeaker = new WasapiOut(AudioClientShareMode.Shared, 10);
+                    _waveOutSpeaker = new WasapiOut(AudioClientShareMode.Shared, latencyInMs);
                     _waveOutSpeaker.Init(_audioFileSpeaker);
                 }
 
