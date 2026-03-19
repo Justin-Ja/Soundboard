@@ -19,6 +19,7 @@ public class ButtonGridViewModel : BaseViewModel
     private readonly IAudioService _audioService;
     private readonly IHotkeyManager _hotkeyManager;
     private ObservableCollection<SoundButtonModel> _soundButtons;
+    private SoundButtonModel _addSoundButton;
     private const int _gridColumns = 5;
     private SoundButtonGridLayout _currentGrid;
 
@@ -35,6 +36,14 @@ public class ButtonGridViewModel : BaseViewModel
         set => SetProperty(ref _soundButtons, value);
     }
 
+    private static readonly SoundButtonModel AddSoundButton = new SoundButtonModel(
+        displayText: "+ Add Sound",
+        isAdd: true,
+        buttonBrush: Brushes.LightGreen,
+        buttonBorderBrush: Brushes.DarkGreen,
+        command: null //Binded in model creation in constructor
+    );
+
     public int GridColumns => _gridColumns;
     public ICommand SetKeyBindingCommand { get; }
 
@@ -46,7 +55,16 @@ public class ButtonGridViewModel : BaseViewModel
 
         SetKeyBindingCommand = new RelayCommand(param => SetKeyBinding(param as SoundButtonModel),
                                                param => CanSetKeyBinding(param as SoundButtonModel));
-        InitializeGrid();
+        
+        _addSoundButton = new SoundButtonModel(
+            displayText: "+ Add Sound",
+            isAdd: true,
+            buttonBrush: Brushes.LightGreen,
+            buttonBorderBrush: Brushes.DarkGreen,
+            command: new RelayCommand(async () => await AddSoundAsync())
+        );
+
+        AppendAddSoundButton();
     }
 
     private bool CanSetKeyBinding(SoundButtonModel button)
@@ -65,24 +83,9 @@ public class ButtonGridViewModel : BaseViewModel
         }
     }
 
-    private void InitializeGrid()
+    private void AppendAddSoundButton()
     {
-        CreateAddSoundButton();
-    }
-
-    //TODO: We create a new soundb button on loads (thats fine) AND on adding a sound (not so fine). Look into another way to do this without having to "new" up a model every time.
-    private void CreateAddSoundButton()
-    {
-        //TODO: RESX Files for UI strings.
-        var addButton = new SoundButtonModel(
-            displayText: "+ Add Sound",
-            isAdd: true,
-            buttonBrush: Brushes.LightGreen,
-            buttonBorderBrush: Brushes.DarkGreen,
-            command: new RelayCommand(async () => await AddSoundAsync())
-        );
-
-        SoundButtons.Add(addButton);
+        SoundButtons.Add(_addSoundButton);
         OnPropertyChanged(nameof(SoundButtons));
     }
 
@@ -120,7 +123,7 @@ public class ButtonGridViewModel : BaseViewModel
 
             SoundButtons.Add(soundButton);
 
-            CreateAddSoundButton();
+            AppendAddSoundButton();
 
             //If we have a current grid, add the button to it (This is for DB purposes, above is for UI purposes)
             if (CurrentGrid != null)
@@ -197,7 +200,7 @@ public class ButtonGridViewModel : BaseViewModel
         }
 
         //Always add the "Add" button at the end
-        CreateAddSoundButton();
+        AppendAddSoundButton();
     }
 
     public List<SoundButton> GetCurrentGridData()
