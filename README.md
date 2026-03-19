@@ -80,12 +80,6 @@ dotnet ef migrations list
 
 ### Additional Notes
 
-This is notes for later, when I finally make this readme useful
-
-Packages: AutoFac + DI net version, NAudio
-NAudio.Sdl2
-EFCore.SQLite,Design,Tools
-
 To play through mic, need a virtual audio device. Will need a way for users to pick that out
 /select audio devices besides picking thru 3rd party application (Voicemeeter)
 
