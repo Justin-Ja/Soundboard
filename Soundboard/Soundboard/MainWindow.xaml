@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Soundboard"
         xmlns:views="clr-namespace:Soundboard.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="800">
-    <Grid>
+        Title="Soundboard" Height="400" Width="800">
+    <Grid Background="#F8F8FC">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>

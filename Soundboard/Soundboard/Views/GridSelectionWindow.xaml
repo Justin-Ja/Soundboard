@@ -16,8 +16,8 @@
     <Window.Resources>
         <converter:NullToBoolean x:Key="NullToBoolean"/>
     </Window.Resources>
-    
-    <Grid Margin="20">
+
+    <Grid Margin="20" Background="#F8F8FC">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>

@@ -6,58 +6,65 @@
              xmlns:local="clr-namespace:Soundboard.Views"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="600">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <StackPanel Orientation="Horizontal" 
-                    HorizontalAlignment="Right"
+    
+    <Border BorderBrush="#A0B0B8" BorderThickness="0,0,0,2" Margin="0,0,0,3">
+        <Grid Background="#EDEDF0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Grid.Row="0"
-                    Margin="0,10,10,0">
-            
-            <!-- Not urgent, but these buttons can def look much better -->
-            <Button Content="New Grid"
+                    Margin="15,10,10,0">
+
+                <!-- Not urgent, but these buttons can def look much better -->
+                <Button Content="New Grid"
                     Command="{Binding NewGridCommand}"
                     Margin="0,0,10,0"
                     Padding="15,5"
                     MinWidth="80"
                     ToolTip="Create a new button grid"/>
 
-            <Button Content="Load"
+                <Button Content="Load"
                     Command="{Binding LoadGridCommand}"
                     Margin="0,0,10,0"
                     Padding="15,5"
                     MinWidth="80"
                     ToolTip="Load an existing button grid"/>
 
-            <Button Content="Save"
+                <Button Content="Save"
                     Command="{Binding SaveGridCommand}"
                     Margin="0,0,10,0"
                     Padding="15,5"
                     MinWidth="80"
                     ToolTip="Save current button grid"/>
 
-            <Button Content="Save As"
+                <Button Content="Save As"
                     Command="{Binding SaveAsGridCommand}"
                     Margin="0,0,0,0"
                     Padding="15,5"
                     MinWidth="80"
                     ToolTip="Save current button grid with a new name"/>
-        </StackPanel>
+            </StackPanel>
 
-        <StackPanel Orientation="Horizontal" 
-                  HorizontalAlignment="Right"
+
+            <StackPanel Orientation="Horizontal" 
+                  HorizontalAlignment="Left"
                   VerticalAlignment="Center"
                   Grid.Row="1"
-                  Margin="0,10,0,0">
-            <TextBlock Text="{Binding CurrentGridName, StringFormat='Current Grid: {0}'}"
+                  Margin="15,10,0,0">
+                <TextBlock Text="{Binding CurrentGridName, StringFormat='Current Grid: {0}'}"
                        VerticalAlignment="Center"
-                       Margin="0,10,10,0"
+                       Margin="0,10,10,1"
+                       FontSize="14"
                        FontWeight="SemiBold"
                        Foreground="DarkBlue"/>
-        </StackPanel>
-    </Grid>
+            </StackPanel>
+
+
+        </Grid>
+    </Border>
 </UserControl>
