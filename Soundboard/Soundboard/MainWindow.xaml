@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Soundboard"
         xmlns:views="clr-namespace:Soundboard.Views"
         mc:Ignorable="d"
+        Icon="Assets/SoundboardIcon.ico"
         Title="Soundboard" Height="400" Width="800">
     <Grid Background="#F8F8FC">
         <Grid.RowDefinitions>
