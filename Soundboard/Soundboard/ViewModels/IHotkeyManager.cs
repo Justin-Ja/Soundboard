@@ -215,6 +215,15 @@ public class HotkeyManager : IHotkeyManager
             Key.Space => Keys.Space,
             Key.Enter => Keys.Enter,
             Key.Escape => Keys.Escape,
+            Key.Tab => Keys.Tab,
+            Key.OemPeriod => Keys.OemPeriod, //Keyboard period, not numpad decimal
+            Key.OemComma => Keys.Oemcomma,  
+            Key.OemQuestion => Keys.OemQuestion, //The '/' char
+            Key.OemOpenBrackets => Keys.OemOpenBrackets,  // [
+            Key.OemCloseBrackets => Keys.OemCloseBrackets, // ]
+            Key.OemQuotes => Keys.OemQuotes,
+            Key.OemSemicolon => Keys.OemSemicolon,
+            Key.OemTilde => Keys.Oemtilde,
             _ => Keys.None
         };
     }
