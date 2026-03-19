@@ -73,6 +73,8 @@ dotnet ef migrations list
 * All the todos  [IN PROGRESS]
 * Update the UI to look good [IN PROGRESS]
 * Update Audio service to default to speakers only if no virtual audio devices are set up (Need to double check if this is already handled)
+* Update the UI to look good
+* Update Audio service to default to speakers only if no virtual audio devices are set up
 * A general cleanup of comments, code and files (More services?)
 * Allow user to pick out a virtual audio device (Should have the app be able to handle as much as possible without having to juggle another application)
 
