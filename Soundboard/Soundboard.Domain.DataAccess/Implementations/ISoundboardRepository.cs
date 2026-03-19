@@ -17,5 +17,6 @@ public interface ISoundboardRepository
     Task<SoundButton> GetSoundButtonByIdAsync(Guid id);
     Task<SoundButtonGridLayout> AddButtonGridWithSoundButtonsAsync(SoundButtonGridLayout grid);
     Task<SoundButtonGridLayout> UpdateButtonGridAsync(SoundButtonGridLayout grid);
+    Task DeleteButtonGridAsync(Guid id);
 }
 

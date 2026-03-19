@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using Soundboard.Domain.DataAccess.Implementations;
+using Soundboard.ViewModels;
 
 namespace Soundboard.Views
 {
@@ -14,19 +15,15 @@ namespace Soundboard.Views
     /// </summary>
     public partial class GridSelectionWindow : Window
     {
-        public string Title { get; }
-        public List<SoundButtonGridLayout> AvailableGrids { get; }
-        public SoundButtonGridLayout SelectedGrid { get; set; }
+        private readonly GridSelectionViewModel _viewModel;
 
-        public GridSelectionWindow(string title, List<SoundButtonGridLayout> availableGrids)
+        public SoundButtonGridLayout SelectedGrid => _viewModel.SelectedGrid;
+
+        public GridSelectionWindow(string title, List<SoundButtonGridLayout> availableGrids, ISoundboardRepository repository)
         {
             InitializeComponent();
-
-            Title = title;
-            AvailableGrids = availableGrids;
-
-            DataContext = this;
-
+            _viewModel = new GridSelectionViewModel(title, availableGrids, repository);
+            DataContext = _viewModel;
             Loaded += (s, e) => GridListBox.Focus();
         }
 

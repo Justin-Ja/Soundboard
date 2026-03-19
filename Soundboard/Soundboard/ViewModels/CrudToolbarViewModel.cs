@@ -108,7 +108,7 @@ public class CrudToolbarViewModel : BaseViewModel, ICrudToolbarViewModel
                 return;
             }
 
-            var selectedGrid = _prompter.PromptForGridSelection("Load Button Grid", availableGrids);
+            var selectedGrid = _prompter.PromptForGridSelection("Load Button Grid", availableGrids, _repository);
 
             if (selectedGrid != null)
             {

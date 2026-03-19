@@ -13,7 +13,7 @@ public interface IPrompter
 {
     string PromptForText(string title, string message, string defaultText = "");
     bool PromptForConfirmation(string title, string message);
-    SoundButtonGridLayout PromptForGridSelection(string title, List<SoundButtonGridLayout> availableGrids);
+    SoundButtonGridLayout PromptForGridSelection(string title, List<SoundButtonGridLayout> availableGrids, ISoundboardRepository repository);
 }
 
 public class Prompter : IPrompter
@@ -33,9 +33,9 @@ public class Prompter : IPrompter
         return result == MessageBoxResult.Yes;
     }
 
-    public SoundButtonGridLayout PromptForGridSelection(string title, List<SoundButtonGridLayout> availableGrids)
+    public SoundButtonGridLayout PromptForGridSelection(string title, List<SoundButtonGridLayout> availableGrids, ISoundboardRepository repository)
     {
-        var gridSelectionWindow = new GridSelectionWindow(title, availableGrids);
+        var gridSelectionWindow = new GridSelectionWindow(title, availableGrids, repository); 
         var result = gridSelectionWindow.ShowDialog();
 
         return result == true ? gridSelectionWindow.SelectedGrid : null;

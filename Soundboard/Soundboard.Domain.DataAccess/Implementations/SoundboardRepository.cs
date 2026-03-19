@@ -114,5 +114,18 @@ public class SoundboardRepository : ISoundboardRepository
             .Include(g => g.SoundButtons)
             .FirstAsync(g => g.Guid == grid.Guid);
     }
+
+    public async Task DeleteButtonGridAsync(Guid id)
+    {
+        var grid = await _context.GridLayouts
+            .Include(g => g.SoundButtons)
+            .FirstOrDefaultAsync(g => g.Guid == id);
+
+        if (grid == null)
+            throw new KeyNotFoundException($"Grid with ID {id} was not found.");
+
+        _context.GridLayouts.Remove(grid);
+        await _context.SaveChangesAsync();
+    }
 }
 

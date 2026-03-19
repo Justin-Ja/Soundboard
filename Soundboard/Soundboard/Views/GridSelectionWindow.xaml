@@ -56,12 +56,19 @@
                     IsEnabled="{Binding ElementName=GridListBox, Path=SelectedItem, Converter={StaticResource NullToBoolean}}"
                     Width="80" 
                     Height="35"
-                    Margin="0,0,10,0"/>
+                    Margin="10,0,0,0"/>
+            <Button Content="Delete"
+                Command="{Binding DeleteGridCommand}"
+                IsEnabled="{Binding ElementName=GridListBox, Path=SelectedItem, Converter={StaticResource NullToBoolean}}"
+                Width="80"
+                Height="35"
+                Margin="10,0,0,0"/>
             <Button Content="Cancel" 
                     IsCancel="True"
                     Click="CancelButton_Click"
                     Width="80" 
-                    Height="35"/>
+                    Height="35"
+                    Margin="10,0,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
